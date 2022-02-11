@@ -1,0 +1,16 @@
+theme: just-the-docs
+exclude:
+  - tmp/
+  - vendor/
+  - Gemfile
+  - Gemfile.lock
+collections:
+  posts:
+    permalink: "/:collection/:path/"
+    output: true
+
+just_the_docs:
+  # Define which collections are used in just-the-docs
+  collections:
+    # Reference the "docs" collection
+    posts:

@@ -1,0 +1,85 @@
+---
+layout: post
+title:  "多线程-交替打印"
+date:   2022-02-11 17:14:34 +0800
+categories: multi-thread
+---
+
+## 交替打印
+[https://leetcode-cn.com/problems/print-foobar-alternately](https://leetcode-cn.com/problems/print-foobar-alternately)
+
+### 问题描述
+```
+我们提供一个类：
+
+class FooBar {
+  public void foo() {
+    for (int i = 0; i < n; i++) {
+      print("foo");
+    }
+  }
+
+  public void bar() {
+    for (int i = 0; i < n; i++) {
+      print("bar");
+    }
+  }
+}
+
+两个不同的线程将会共用一个 FooBar 实例。
+其中一个线程将会调用 foo() 方法，
+另一个线程将会调用 bar() 方法。
+
+请设计修改程序，以确保 "foobar" 被输出 n 次。
+```
+### 代码
+```
+class FooBar {
+    private int n;
+    Lock lock;
+    Condition condition;
+    volatile int num = 1;
+    public FooBar(int n) {
+        this.n = n;
+        lock = new ReentrantLock();
+        condition = lock.newCondition();
+    }
+
+    public void foo(Runnable printFoo) throws InterruptedException {
+        
+        for (int i = 0; i < n; i++) {
+            lock.lock();
+            try {
+                while (num % 2 != 1) {
+                    condition.await();
+                }
+                printFoo.run();
+                num++;
+                condition.signal();
+            } catch(Exception e) {
+                // nothing to do
+            } finally {
+                lock.unlock();
+            }
+        }
+    }
+
+    public void bar(Runnable printBar) throws InterruptedException {
+        for (int i = 0; i < n; i++) {
+            lock.lock();
+            try {
+                while (num % 2 == 1) {
+                    condition.await();
+                }
+                printBar.run();
+                num++;
+                condition.signal();
+            } catch(Exception e) {
+                // nothing to do
+            } finally {
+                lock.unlock();
+            }
+        }
+    }
+}
+```
