@@ -1,10 +1,9 @@
 remote_theme: pmarsceill/just-the-docs
-#theme: just-the-docs
-exclude:
-  - tmp/
-  - vendor/
-  - Gemfile
-  - Gemfile.lock
+
+exclude: ["node_modules/", "*.gemspec", "*.gem", "Gemfile", "Gemfile.lock", "package.json", "package-lock.json",  "script/", "LICENSE.txt", "lib/", "bin/", "README.md", "Rakefile"
+, "docs/tests/"
+]
+
 collections:
   posts:
     permalink: "/:collection/:path/"
@@ -15,3 +14,7 @@ just_the_docs:
   collections:
     # Reference the "docs" collection
     posts:
+
+title: Kaiqianglee's algorithm
+footer_content: "Copyright &copy; 2022 by Kaiqianglee"
+
